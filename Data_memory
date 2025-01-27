@@ -1,0 +1,57 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 30.12.2024 16:36:09
+// Design Name: 
+// Module Name: Data_memory
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module Data_memory(
+input clk,
+input reset,
+input [4:0] memory_address,
+input [31:0] data_to_memory,
+input sw, // 0 means reading from memory and 1 means writing to memory
+output reg [31:0] data_out
+    );
+
+    reg [31:0] data_memory [31:0];
+    integer i;
+    always@(posedge clk)
+    begin
+        if(reset)
+           begin
+              for(i=0; i<32; i=i+1)
+              begin
+                  data_memory[i] = 32'h00000000;
+              end
+           end
+         else
+            begin
+               if(sw)
+                  begin
+                     data_memory[memory_address] = data_to_memory;
+                  end
+                else if(!sw)
+                   begin
+                     data_out =  data_memory[memory_address];
+                   end
+                  
+            end
+            
+    end
+endmodule
